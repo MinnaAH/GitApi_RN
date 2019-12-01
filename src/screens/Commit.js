@@ -6,7 +6,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, Image, TextInput, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import {Api} from '../components/Api';
 
 export default class Commit extends Component{
@@ -16,6 +16,7 @@ export default class Commit extends Component{
             repo: null,
             user: null,
             commitData: [],
+            loading: true,
         }
     }
 
@@ -36,14 +37,16 @@ export default class Commit extends Component{
     userCommit = async () => {
         const userData = await new Api().getCommits(this.state.user, this.state.repo);
         this.setState({
-            commitData: userData
+            commitData: userData,
+            loading: false
         })
     }
 
     render(){
-        const {commitData} = this.state;   
+        const {commitData, loading} = this.state;   
         return(
             <ScrollView>
+                <ActivityIndicator animating={loading}/>
                 {
                     commitData.slice(0, 10).map((item, index) => (
                         <View key={index}>

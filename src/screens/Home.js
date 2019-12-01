@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Button, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Api } from '../components/Api';
 
 export default class Home extends Component{
@@ -16,6 +16,7 @@ export default class Home extends Component{
     this.state={
       user: null,
       repo: [],
+      loading: null,
     }
   }
 
@@ -28,6 +29,9 @@ export default class Home extends Component{
           repo: [...this.state.repo, userData[i].name]
         })
       }
+      this.setState({
+        loading: false,
+      })
     }catch(error){
       console.log(error);
     }
@@ -40,7 +44,7 @@ export default class Home extends Component{
   }
 
   render(){
-    const {repo, user} = this.state;
+    const {repo, user, loading} = this.state;
     return(
       <View>
         <TextInput
@@ -48,7 +52,8 @@ export default class Home extends Component{
           value={user}
           onChangeText={(user) => this.setState({user})}
         />
-        <Button onPress={() => {this.userRepos();this.setState({repo:[]})}} title={'Get Repos'}/>
+        <Button onPress={() => {this.userRepos();this.setState({repo:[], loading: true})}} title={'Get Repos'}/>
+        <ActivityIndicator animating={loading}/>
         <ScrollView>
           {
             repo.map((item, index) => (

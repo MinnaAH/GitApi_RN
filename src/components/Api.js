@@ -11,7 +11,6 @@ export class Api extends Component{
 
     //Fetch repo names from api
     getRepos = async (user) => {
-        console.log('User: ' + user);
         try{
             const api = await fetch(`https://api.github.com/users/${user}/repos`);
             const data = await api.json();
