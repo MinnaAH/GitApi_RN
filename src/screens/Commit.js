@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import {Api} from '../components/Api';
+import styles from '../Style';
 
 export default class Commit extends Component{
     constructor(props){
@@ -45,21 +46,31 @@ export default class Commit extends Component{
     render(){
         const {commitData, loading} = this.state;   
         return(
-            <ScrollView>
-                <ActivityIndicator animating={loading}/>
-                {
-                    commitData.slice(0, 10).map((item, index) => (
-                        <View key={index}>
-                            <Text>{item.commit.author.name}</Text>
-                            {item.author && item.author.avatar_url &&
-                                <Image style={{width: 50, height: 50}} source={{uri: item.author.avatar_url}} />
-                            }  
-                            <Text>{item.commit.author.date}</Text>
-                            <Text>{item.commit.message}</Text>
-                        </View>
-                    ))
+            <View style={styles.container}>
+                {loading && 
+                    <View style={styles.loading}>
+                    <ActivityIndicator animating={loading}/>
+                    </View>
                 }
-            </ScrollView>
+                <ScrollView>
+                    {
+                        commitData.slice(0, 10).map((item, index) => (
+                            <View key={index} style={styles.commitList}>
+                                <View style={styles.ImageView}>
+                                    {item.author && item.author.avatar_url &&
+                                        <Image style={styles.image} source={{uri: item.author.avatar_url}} />
+                                    }
+                                </View>
+                                <View style={styles.textView}>
+                                    <Text style={styles.textCommit}>{item.commit.author.name}</Text>  
+                                    <Text style={styles.textCommit}>{item.commit.author.date}</Text>
+                                    <Text style={styles.textCommit}>{item.commit.message}</Text>
+                                </View>
+                            </View>
+                        ))
+                    }
+                </ScrollView>
+            </View>
         )
     }
 }
