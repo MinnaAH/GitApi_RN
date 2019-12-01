@@ -28,17 +28,21 @@ export default class Home extends Component{
     if(this.state.user){
       try{
         const userData = await new Api().getRepos(this.state.user);
-        for(var i=0; i<userData.length; i++){
-          this.setState({
-            repo: [...this.state.repo, userData[i].name]
-          })
+        if(userData.length > 0){
+          for(var i=0; i<userData.length; i++){
+            this.setState({
+              repo: [...this.state.repo, userData[i].name]
+            })
+          }
         }
+        else{
+          alert('No repositories under this username')
+        }       
         this.setState({
           loading: false,
-        });        
-        
+        });
       }catch(error){
-        console.log(error);
+        alert('Something went wrong! Error: ' + error);
       }
     }
     else{
@@ -50,8 +54,7 @@ export default class Home extends Component{
   }
 
   //navigate to commit screen and pass parameters repo and user
-  commits = async (repoName) => {
-    
+  commits = async (repoName) => { 
     const {navigate} = this.props.navigation;
     navigate('Commit', {repo: repoName, user: this.state.user});
   }

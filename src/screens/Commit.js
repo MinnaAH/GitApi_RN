@@ -36,11 +36,16 @@ export default class Commit extends Component{
 
     //Get data from api
     userCommit = async () => {
-        const userData = await new Api().getCommits(this.state.user, this.state.repo);
-        this.setState({
-            commitData: userData,
-            loading: false
-        })
+        try{
+            const userData = await new Api().getCommits(this.state.user, this.state.repo);
+            this.setState({
+                commitData: userData,
+                loading: false
+            })
+        }catch(error){
+            alert('Something went wrong! Error: ' + error);
+        }
+        
     }
 
     render(){
@@ -59,7 +64,7 @@ export default class Commit extends Component{
                         commitData.slice(0, 10).map((item, index) => (
                             <View key={index} style={styles.commitList}>
                                 <View style={styles.ImageView}>
-                                    {item.author && item.author.avatar_url &&
+                                { item.author && item.author.avatar_url &&
                                         <Image style={styles.image} source={{uri: item.author.avatar_url}} />
                                     }
                                 </View>
