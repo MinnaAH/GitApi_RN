@@ -49,7 +49,9 @@ export default class Commit extends Component{
             <View style={styles.container}>
                 {loading && 
                     <View style={styles.loading}>
-                    <ActivityIndicator animating={loading}/>
+                        <ActivityIndicator 
+                            size='large'
+                            animating={loading}/>
                     </View>
                 }
                 <ScrollView>
@@ -62,9 +64,10 @@ export default class Commit extends Component{
                                     }
                                 </View>
                                 <View style={styles.textView}>
-                                    <Text style={styles.textCommit}>{item.commit.author.name}</Text>  
-                                    <Text style={styles.textCommit}>{item.commit.author.date}</Text>
-                                    <Text style={styles.textCommit}>{item.commit.message}</Text>
+                                    <Text style={styles.textCommit}>Author: {item.commit.author.name}</Text>  
+                                    <Text style={styles.textCommit}>Date: {new Date(item.commit.author.date).toLocaleDateString()}</Text>
+                                    <Text style={styles.textCommit}>Time: {new Date(item.commit.author.date).toLocaleTimeString()}</Text>
+                                    <Text style={styles.textCommit}>Commit message: {item.commit.message}</Text>
                                 </View>
                             </View>
                         ))

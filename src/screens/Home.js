@@ -68,7 +68,9 @@ export default class Home extends Component{
         />
         {loading && 
           <View style={styles.loading}>
-            <ActivityIndicator animating={loading}/>
+            <ActivityIndicator 
+              size='large'
+              animating={loading}/>
           </View>
         }
         <ScrollView>
