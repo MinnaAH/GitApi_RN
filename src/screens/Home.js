@@ -16,24 +16,32 @@ export default class Home extends Component{
     this.state={
       user: null,
       repo: [],
-      loading: null,
+      loading: false,
     }
   }
 
   //get repo names from api
   userRepos = async () => {
-    try{
-      const userData = await new Api().getRepos(this.state.user);
-      for(var i=0; i<userData.length; i++){
+    if(this.state.user){
+      try{
+        const userData = await new Api().getRepos(this.state.user);
+        for(var i=0; i<userData.length; i++){
+          this.setState({
+            repo: [...this.state.repo, userData[i].name]
+          })
+        }
         this.setState({
-          repo: [...this.state.repo, userData[i].name]
+          loading: false,
         })
+      }catch(error){
+        console.log(error);
       }
+    }
+    else{
       this.setState({
         loading: false,
       })
-    }catch(error){
-      console.log(error);
+      alert('You must enter username before search!');
     }
   }
 
@@ -52,7 +60,7 @@ export default class Home extends Component{
           value={user}
           onChangeText={(user) => this.setState({user})}
         />
-        <Button onPress={() => {this.userRepos();this.setState({repo:[], loading: true})}} title={'Get Repos'}/>
+        <Button onPress={() => {this.setState({repo:[], loading: true});this.userRepos()}} title={'Get Repos'}/>
         <ActivityIndicator animating={loading}/>
         <ScrollView>
           {
