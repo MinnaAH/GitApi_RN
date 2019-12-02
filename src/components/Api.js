@@ -6,6 +6,7 @@
  */
 
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 
 export class Api extends Component{
 
@@ -14,14 +15,11 @@ export class Api extends Component{
         try{
             const api = await fetch(`https://api.github.com/users/${user}/repos`);
             const data = await api.json();
-
-            if(data.message === 'Not Found'){
-                alert('User not found! Check the username.')
-            }
             return data;
 
         }catch(error){
-            alert('Something went wrong! Error: ' + error);
+            Alert.alert('Something went wrong!', `Error: ${error}`)
+            console.log(error);
         }    
     }
 
@@ -33,7 +31,7 @@ export class Api extends Component{
             return data;
             
         }catch(error){
-            alert('Something went wrong! Error: ' + error);
+            Alert.alert('Something went wrong!', `Error: ${error}`)
         }    
     }
 }

@@ -6,7 +6,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { Alert, View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import {Api} from '../components/Api';
 import styles from '../Style';
 
@@ -43,7 +43,8 @@ export default class Commit extends Component{
                 loading: false
             })
         }catch(error){
-            alert('Something went wrong! Error: ' + error);
+            Alert.alert('Something went wrong!', `Error: ${error}`);
+            console.log(error);
         }
         
     }

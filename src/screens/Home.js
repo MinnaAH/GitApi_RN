@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
 import { Api } from '../components/Api';
 import styles from '../Style';
 
@@ -24,33 +24,36 @@ export default class Home extends Component{
   //get repo names from api
   userRepos = async () => {
     Keyboard.dismiss();
-    
+
     if(this.state.user){
       try{
         const userData = await new Api().getRepos(this.state.user);
-        if(userData.length > 0){
-          for(var i=0; i<userData.length; i++){
-            this.setState({
-              repo: [...this.state.repo, userData[i].name]
-            })
-          }
+
+        switch(true){
+          case userData == '':
+              Alert.alert(`Repositories from ${this.state.user} was not found.` , 'User may not have any public repositories yet');
+              break;
+          case userData.message == 'Not Found':
+              Alert.alert(`User ${this.state.user} not found`, 'Check username');
+              break;
+          default:
+              this.setState({repo: userData});
+              break;
         }
-        else{
-          alert('No repositories under this username')
-        }       
         this.setState({
           loading: false,
-        });
+        })
       }catch(error){
-        alert('Something went wrong! Error: ' + error);
+        Alert.alert('Something went wrong!', `Error: ${error}`)
+        console.log(error);
       }
     }
     else{
       this.setState({
         loading: false,
-      })
-      alert('You must enter username before search!');
-    }
+      });
+      Alert.alert('Username cannot be empty!', 'Enter username before search')
+    }    
   }
 
   //navigate to commit screen and pass parameters repo and user
@@ -82,9 +85,9 @@ export default class Home extends Component{
               <TouchableOpacity
                 style={styles.repoList}
                 key={index}
-                onPress={() => this.commits(item)}
+                onPress={() => this.commits(item.name)}
               >
-              <Text style={styles.textRepo}>{item}</Text>
+              <Text style={styles.textRepo}>{item.name}</Text>
               </TouchableOpacity>
 
             ))

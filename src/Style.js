@@ -17,13 +17,13 @@ export default StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 10,
         borderWidth: 1,
-        borderColor: '#d6d7da',
+        borderColor: '#CCCCCC',
     },
     btnContainer:{
         width: '100%',
         bottom: 0,
         borderWidth: 1,
-        borderColor: '#d6d7da',
+        borderColor: '#CCCCCC',
     },
     btn:{
         width: '100%',
@@ -48,7 +48,7 @@ export default StyleSheet.create({
         paddingVertical: 10,
         overflow: 'hidden',
         borderWidth: 1,
-        borderColor: '#d6d7da',
+        borderColor: '#CCCCCC',
     },
     ImageView:{
         width: 100, 
