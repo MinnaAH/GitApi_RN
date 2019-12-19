@@ -1,68 +1,27 @@
 /**
  * GitHub Api App
  * (c) Minna Hannula, 11/2019
- * get 10 most resent commits
- * authos, avatar (if not null), commit message and  date
+ * display 10 most resent commits
  */
 
-import React, { Component } from 'react';
-import { Alert, View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
-import {Api} from '../components/Api';
+import React, {Component} from 'react';
+import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import styles from '../Style';
 
 export default class Commit extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            repo: null,
-            user: null,
-            commitData: [],
-            loading: true,
-        }
-    }
-
-    //Get username and repo from user input in home screen
-    componentDidMount = async () =>{
-        const {navigation} = this.props;
-        const userRepo = await navigation.getParam('repo');
-        const username = await navigation.getParam('user');
-        this.setState({
-            repo: userRepo,
-            user: username,
-        });
-
-        this.userCommit();
-    }
-
-    //Get data from api
-    userCommit = async () => {
-        try{
-            const userData = await new Api().getCommits(this.state.user, this.state.repo);
-            this.setState({
-                commitData: userData,
-                loading: false
-            })
-        }catch(error){
-            Alert.alert('Something went wrong!', `Error: ${error}`);
-            console.log(error);
-        }
-        
-    }
-
     render(){
-        const {commitData, loading} = this.state;   
         return(
             <View style={styles.container}>
-                {loading && 
+                {this.props.loading && 
                     <View style={styles.loading}>
                         <ActivityIndicator 
                             size='large'
-                            animating={loading}/>
+                            animating={this.props.loading}/>
                     </View>
                 }
                 <ScrollView>
                     {
-                        commitData.slice(0, 10).map((item, index) => (
+                        this.props.data.slice(0,10).map((item, index) => (
                             <View key={index} style={styles.commitList}>
                                 <View style={styles.ImageView}>
                                 { item.author && item.author.avatar_url &&

@@ -6,12 +6,12 @@
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import Home from './src/screens/Home';
-import Commit from './src/screens/Commit';
+import Repos from './src/components/Repos';
+import Commit from './src/components/Commits';
 
 const MainNavigator = createStackNavigator(
   {
-    Home: {screen: Home},
+    Home: {screen: Repos},
     Commit: {screen: Commit},
   },
   {
